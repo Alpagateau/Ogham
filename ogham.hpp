@@ -186,7 +186,7 @@ namespace ogm{
           if(i < oldw && j < oldh)
             WriteAt(oldb[i][j], i, j);
           else {
-            WriteAt(' ', i, j);
+            WriteAt(base_char, i, j);
           }
         }
       } 
@@ -300,9 +300,16 @@ namespace ogm{
           float chr = children[i]->hratio;
           if(children[i]->relative)
           {
+
+            int neww = (int)(width * cwr) - (bordered ? 2 : 0);
+            int newh = (int)(height* chr) - (bordered ? 2 : 0);
+            if (cwr < 1)
+              neww += 1;
+            if (chr < 1)
+              newh += 1;
             children[i]->resize(
-              (int)(width * cwr), 
-              (int)(height* chr)
+              neww, 
+              newh
             );
             W = children[i]->width;
             H = children[i]->height;
@@ -313,15 +320,16 @@ namespace ogm{
           int ap = children[i]->anchorType;
           int xa = ap % 4;
           int ya = (ap >> 2) % 4;
-          int xpos = 0; // right 
-          int ypos = 0; // top
+          int boff = bordered ? 1 : 0;
+          int xpos = boff; // right 
+          int ypos = boff; // top
           
           switch (xa) {
             case 1: //middle 
               xpos = (width/2)-(W/2);
               break;
             case 2: //end 
-              xpos = width-W;
+              xpos = width-W-boff;
               break;
             case 3:
               xpos = offx;
@@ -334,7 +342,7 @@ namespace ogm{
               ypos = (height/2)-(H/2);
               break;
             case 2: //end
-              ypos = height-H;
+              ypos = height-H-boff;
               break;
             case 3:
               ypos = offy;
@@ -458,8 +466,6 @@ namespace ogm{
     window() : widget(0,0)
     {
       get_terminal_size(width,height); 
-      //std::cout << "init window " << height << "|" << width <<std::endl;
-      //width = w.ws_col;
       height--;
     }
     
