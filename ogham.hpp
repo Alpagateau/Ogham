@@ -43,7 +43,7 @@ void get_terminal_size(int& width, int& height) {
     ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
     width = (int)(w.ws_col);
     height = (int)(w.ws_row);
-#endif // Windows/Linux
+#endif 
 }
 
 int set_utf8()
@@ -68,12 +68,9 @@ std::wstring str2wstr(const std::string& str) {
 }
 
 std::string appndWcharToStr(const std::string& original, wchar_t wideChar) {
-    // Create a converter to convert wide characters to UTF-8
     std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;
-    // Convert the wide character to a UTF-8 string
-    std::wstring wideString(1, wideChar); // Create a wstring with the wide character
+    std::wstring wideString(1, wideChar);
     std::string utf8String = converter.to_bytes(wideString);
-    // Append the UTF-8 string to the original string
     return original + utf8String;
 }
 
@@ -128,7 +125,14 @@ namespace ogm{
       width = w;
       height = h;
     } 
-     
+    
+    widget(int w, int h, bool bord)
+    {
+      width = w;
+      height = h;
+      bordered = bord;
+    }
+    
     widget(float wr, float hr)
     {
       wratio = wr;
@@ -136,6 +140,16 @@ namespace ogm{
       get_terminal_size(width, height);
       height--;
       relative = true;
+    }
+    
+    widget(float wr, float hr, bool bord)
+    {
+      wratio = wr;
+      hratio = hr;
+      get_terminal_size(width, height);
+      height--;
+      relative = true;
+      bordered = bord;
     }
     
     bool SetAnchorType(int at)

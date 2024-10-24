@@ -9,9 +9,8 @@ int main()
   win.colored= true;
   win.base_char = (ogm::tchar){L' ', WHITE, RED};
   
-  ogm::widget cwin(30,10);
+  ogm::widget cwin(30,10,true);
   cwin.colored = true;
-  cwin.bordered = true;
   cwin.SetAnchorType(XMIDDLE | YMIDDLE);
   cwin.base_char = (ogm::tchar){L' ', RED, WHITE};
   
@@ -28,7 +27,7 @@ int main()
       msg += fullmsg[counter/2];
       if(fullmsg[counter/2] == L'\n')
       {
-        Sleep(500);
+        sleep(5);
       }
     }
     else if (counter/2 > fullmsg.size())
@@ -37,7 +36,7 @@ int main()
     }
     cwin.WriteAt(msg, 0,0);
     counter++;
-    Sleep(50);
+    sleep(0.5);
   }
   return 0;
 }
